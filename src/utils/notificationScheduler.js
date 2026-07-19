@@ -126,6 +126,7 @@ export async function scheduleTaskNotifications(taskId) {
               threadIdentifier: `task-${task.id}`,
             },
             trigger: {
+              type: Notifications.SchedulableTriggerInputTypes.DATE,
               date: fireTime,
             },
           });
@@ -157,6 +158,7 @@ export async function scheduleTaskNotifications(taskId) {
               threadIdentifier: `task-${task.id}`,
             },
             trigger: {
+              type: Notifications.SchedulableTriggerInputTypes.DATE,
               date: fireTime,
             },
           });
@@ -232,6 +234,7 @@ export async function scheduleRecurringTaskNotification(taskId) {
           threadIdentifier: `task-${task.id}`,
         },
         trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DAILY,
           hour: hours,
           minute: minutes,
           repeats: true,
@@ -271,6 +274,7 @@ export async function scheduleRecurringTaskNotification(taskId) {
               threadIdentifier: `task-${task.id}`,
             },
             trigger: {
+              type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
               weekday: weekday,
               hour: hours,
               minute: minutes,
@@ -345,6 +349,7 @@ export async function handleNotificationResponse(response) {
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: notification.request.content,
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
         date: snoozeTime,
       },
     });

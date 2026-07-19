@@ -1,19 +1,45 @@
+# dependencies
 node_modules/
+
+# Expo / React Native
 .expo/
+.expo-shared/
+web-build/
 dist/
+
+# native build outputs
+android/.gradle/
+android/app/build/
+android/app/.cxx/
+*.apk
+*.aab
+
+# logs
 npm-debug.*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# local env files
+.env
+.env.*
+!.env.example
+
+# OS / editor files
+.DS_Store
+.idea/
+
+# secrets / signing
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
 *.mobileprovision
+
+# patch / merge leftovers
 *.orig.*
-web-build/
+*.rej
 
-# macOS
-.DS_Store
-
-# Temporary files created by Metro to check the health of the file watcher
+# Metro
 .metro-health-check*
-
-# Made with Bob
