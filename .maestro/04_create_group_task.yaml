@@ -1,0 +1,49 @@
+# Maestro E2E Flow: Create a group and add a task to it
+# Depends on: 01_signup
+
+appId: remind.app
+---
+- launchApp
+
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 30000
+
+# Navigate to Groups tab
+- tapOn: "Groups"
+
+# Create a new group
+- tapOn:
+    id: "fab-create-group"
+- extendedWaitUntil:
+    visible: "New Group"
+    timeout: 5000
+- tapOn: "e.g. Groceries, Work Sprint, Family…"
+- inputText: "Work Sprint"
+- tapOn: "Create Group"
+
+# Verify group was created
+- extendedWaitUntil:
+    visible: "Work Sprint"
+    timeout: 5000
+
+# Add a task to the group
+- tapOn: "Add Task"
+- extendedWaitUntil:
+    visible: "Add Task"
+    timeout: 5000
+- tapOn: "Enter task title"
+- inputText: "Deploy new version"
+- hideKeyboard
+- tapOn: "Create Task"
+
+# Verify task appears in the group
+- extendedWaitUntil:
+    visible: "Deploy new version"
+    timeout: 5000

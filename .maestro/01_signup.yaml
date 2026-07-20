@@ -1,0 +1,58 @@
+# Maestro E2E Flow: Sign Up
+# Simulates a new user creating an account.
+#
+# Prerequisites: Metro bundler running on port 8081 (expo start --port 8081)
+# Run BEFORE the other flows — they depend on the session created here.
+
+appId: remind.app
+---
+- launchApp:
+    clearState: true
+    permissions:
+      notifications: allow
+
+# clearState wipes the deep-link intent, so the dev-client server picker
+# appears. Tap the Metro server row directly to connect.
+- runFlow:
+    when:
+      visible: "http://10.0.2.2:8081"
+    commands:
+      - tapOn: "http://10.0.2.2:8081"
+
+# Dismiss the dev-client onboarding sheet if present
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Wait for the JS bundle to load and the Login screen to appear
+- extendedWaitUntil:
+    visible: "Remind"
+    timeout: 30000
+- assertVisible: "Log In"
+
+# Switch to Sign Up mode
+- tapOn: "Sign Up"
+- assertVisible: "Create Account"
+
+# Display name (optional field)
+- tapOn: "Your name (optional)"
+- inputText: "Test User"
+
+# Username
+- tapOn: "e.g. johndoe"
+- inputText: "testuser"
+
+# Password
+- tapOn: "••••••••"
+- inputText: "password123"
+
+# Submit
+- tapOn: "Create Account"
+
+# Verify sign-up succeeded and we are on the main app
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+- assertVisible: "Today"

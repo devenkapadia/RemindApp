@@ -108,6 +108,8 @@ export default function SomedayScreen({ navigation }) {
       <TouchableOpacity
         style={styles.checkButton}
         onPress={() => handleMarkDone(task)}
+        testID={`task-done-${task.title.toLowerCase().replace(/\s+/g, '-')}`}
+        accessibilityLabel={`task-done-${task.title.toLowerCase().replace(/\s+/g, '-')}`}
       >
         <Ionicons name="checkmark-circle-outline" size={28} color="#34C759" />
       </TouchableOpacity>

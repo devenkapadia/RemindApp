@@ -181,6 +181,8 @@ export default function AllTasksScreen({ navigation }) {
         <TouchableOpacity
           style={[styles.filterButton, filterType === 'all' && styles.filterButtonActive]}
           onPress={() => handleFilterType('all')}
+          testID="filter-all"
+          accessibilityLabel="filter-all"
         >
           <Text style={[styles.filterText, filterType === 'all' && styles.filterTextActive]}>
             All

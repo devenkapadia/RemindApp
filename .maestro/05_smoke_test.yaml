@@ -1,0 +1,67 @@
+# Maestro E2E Flow: Full smoke test — signup, create task, verify
+# Self-contained: launches with clearState and runs all steps in one flow.
+#
+# Prerequisites: Metro bundler running on port 8081 (expo start --port 8081)
+
+appId: remind.app
+---
+# ── Launch ────────────────────────────────────────────────────────────────────
+- launchApp:
+    clearState: true
+    permissions:
+      notifications: allow
+
+- runFlow:
+    when:
+      visible: "http://10.0.2.2:8081"
+    commands:
+      - tapOn: "http://10.0.2.2:8081"
+
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# ── Sign up ───────────────────────────────────────────────────────────────────
+- extendedWaitUntil:
+    visible: "Remind"
+    timeout: 30000
+- tapOn: "Sign Up"
+- tapOn: "e.g. johndoe"
+- inputText: "smokeuser"
+- tapOn: "••••••••"
+- inputText: "smoke123"
+- tapOn: "Create Account"
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# ── Create a deadline task ────────────────────────────────────────────────────
+- tapOn:
+    id: "add-task-button"
+- extendedWaitUntil:
+    visible: "Add Task"
+    timeout: 5000
+- tapOn: "Enter task title"
+- inputText: "Smoke test task"
+- hideKeyboard
+- tapOn: "Create Task"
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 5000
+
+# ── Verify task exists on Today screen ───────────────────────────────────────
+- assertVisible: "Smoke test task"
+
+# ── Open task detail and mark done ───────────────────────────────────────────
+- tapOn: "Smoke test task"
+- extendedWaitUntil:
+    visible: "Smoke test task"
+    timeout: 5000
+- assertVisible: "Status: pending"
+- tapOn: "Mark All Done"
+- tapOn: "Mark Done"
+
+# ── Verify task gone from Today ───────────────────────────────────────────────
+- assertNotVisible: "Smoke test task"

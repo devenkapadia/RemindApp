@@ -99,6 +99,8 @@ export default function GroupsScreen({ navigation }) {
       <TouchableOpacity
         style={styles.fab}
         onPress={() => navigation.navigate('GroupCreate')}
+        testID="fab-create-group"
+        accessibilityLabel="fab-create-group"
       >
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>

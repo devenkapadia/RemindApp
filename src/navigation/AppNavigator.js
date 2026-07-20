@@ -35,10 +35,22 @@ function TasksStack({ navigation }) {
         component={TodayScreen}
         options={{
           title: 'Today',
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => navigation.navigate('TasksAll')}
+              testID="nav-all-tasks"
+              accessibilityLabel="nav-all-tasks"
+            >
+              <Ionicons name="list-outline" size={26} color="#007AFF" />
+            </TouchableOpacity>
+          ),
           headerRight: () => (
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => navigation.navigate('AddEditTask')}
+              testID="add-task-button"
+              accessibilityLabel="add-task-button"
             >
               <Ionicons name="add-circle" size={32} color="#007AFF" />
             </TouchableOpacity>
@@ -50,10 +62,22 @@ function TasksStack({ navigation }) {
         component={AllTasksScreen}
         options={{
           title: 'All Tasks',
+          headerLeft: () => (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => navigation.navigate('TasksSomeday')}
+              testID="nav-someday"
+              accessibilityLabel="nav-someday"
+            >
+              <Ionicons name="time-outline" size={26} color="#007AFF" />
+            </TouchableOpacity>
+          ),
           headerRight: () => (
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => navigation.navigate('AddEditTask')}
+              testID="add-task-button"
+              accessibilityLabel="add-task-button"
             >
               <Ionicons name="add-circle" size={32} color="#007AFF" />
             </TouchableOpacity>

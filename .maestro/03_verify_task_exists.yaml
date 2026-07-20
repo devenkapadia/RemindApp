@@ -1,0 +1,36 @@
+# Maestro E2E Flow: Verify task exists and check its detail screen
+# Depends on: 02_create_personal_task
+
+appId: remind.app
+---
+# Resume the app — dev-client reloads the JS bundle from Metro each time.
+- launchApp
+
+# Dismiss the Expo dev-client onboarding sheet if present
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Wait for the JS bundle to finish loading before asserting anything
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 30000
+- assertVisible: "Buy groceries"
+
+# Open the task detail
+- tapOn: "Buy groceries"
+- assertVisible: "Buy groceries"
+- assertVisible: "Status: pending"
+
+# Go back to Today
+- pressKey: Back
+
+# Also verify it appears in All Tasks — tap the list icon in the header
+- tapOn:
+    id: "nav-all-tasks"
+- extendedWaitUntil:
+    visible: "All Tasks"
+    timeout: 5000
+- assertVisible: "Buy groceries"

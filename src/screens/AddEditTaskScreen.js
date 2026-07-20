@@ -36,7 +36,7 @@ export default function AddEditTaskScreen({ route, navigation }) {
 
   const [title, setTitle] = useState('');
   const [taskType, setTaskType] = useState('deadline');
-  const [deadline, setDeadline] = useState(new Date());
+  const [deadline, setDeadline] = useState(() => { const d = new Date(); d.setHours(d.getHours() + 1); return d; });
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   

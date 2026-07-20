@@ -1,0 +1,26 @@
+# Maestro E2E Flow: Create a personal task
+# Depends on: 01_signup (user must already be logged in)
+
+appId: remind.app
+---
+# Verify we are on the Today screen
+- assertVisible: "Today"
+
+# Tap the + button in the navigation header
+- tapOn:
+    id: "add-task-button"
+
+# Wait for the Add Task screen to slide in
+- extendedWaitUntil:
+    visible: "Add Task"
+    timeout: 5000
+
+# Enter task title
+- tapOn: "Enter task title"
+- inputText: "Buy groceries"
+
+# Save
+- tapOn: "Create Task"
+
+# Verify we are back on Today and the task appears
+- assertVisible: "Buy groceries"
