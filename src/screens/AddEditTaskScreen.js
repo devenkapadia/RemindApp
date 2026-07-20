@@ -18,18 +18,21 @@ import {
   createChecklistItem,
   updateChecklistItem,
   deleteChecklistItem,
+  getGroupMembers,
 } from '../database/db';
 import {
   scheduleTaskNotifications,
   cancelTaskNotifications,
   scheduleRecurringTaskNotification
 } from '../utils/notificationScheduler';
+import { useAuth } from '../context/AuthContext';
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default function AddEditTaskScreen({ route, navigation }) {
-  const { taskId, promoteToDeadline } = route.params || {};
+  const { taskId, promoteToDeadline, groupId: routeGroupId } = route.params || {};
   const isEditing = !!taskId;
+  const { user } = useAuth();
 
   const [title, setTitle] = useState('');
   const [taskType, setTaskType] = useState('deadline');
@@ -46,6 +49,10 @@ export default function AddEditTaskScreen({ route, navigation }) {
   // Checklist items
   const [checklistItems, setChecklistItems] = useState([]);
   const [newItemText, setNewItemText] = useState('');
+
+  // Assignee (group tasks only)
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [assignedTo, setAssignedTo] = useState(null); // user id
   
   const [saving, setSaving] = useState(false);
 
@@ -55,7 +62,19 @@ export default function AddEditTaskScreen({ route, navigation }) {
     } else if (promoteToDeadline) {
       setTaskType('deadline');
     }
+    if (routeGroupId) {
+      loadGroupMembers();
+    }
   }, [taskId]);
+
+  const loadGroupMembers = async () => {
+    try {
+      const members = await getGroupMembers(routeGroupId);
+      setGroupMembers(members);
+    } catch (e) {
+      console.error('Error loading group members:', e);
+    }
+  };
 
   const loadTask = async () => {
     try {
@@ -78,6 +97,15 @@ export default function AddEditTaskScreen({ route, navigation }) {
         
         if (taskData.items) {
           setChecklistItems(taskData.items);
+        }
+
+        if (taskData.assigned_to) {
+          setAssignedTo(taskData.assigned_to);
+          // Also load members if this is a group task being edited
+          if (taskData.group_id) {
+            const members = await getGroupMembers(taskData.group_id);
+            setGroupMembers(members);
+          }
         }
       }
     } catch (error) {
@@ -112,6 +140,9 @@ export default function AddEditTaskScreen({ route, navigation }) {
         recurrence_freq: taskType === 'recurring' ? recurrenceFreq : null,
         recurrence_time: taskType === 'recurring' ? recurrenceTime : null,
         recurrence_days: taskType === 'recurring' && recurrenceFreq === 'weekly' ? recurrenceDays : null,
+        user_id: user.id,
+        group_id: routeGroupId || null,
+        assigned_to: assignedTo || null,
       };
 
       let finalTaskId;
@@ -400,6 +431,36 @@ export default function AddEditTaskScreen({ route, navigation }) {
         </>
       )}
 
+      {groupMembers.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.label}>Assign To</Text>
+          <View style={styles.memberList}>
+            {/* Unassigned option */}
+            <TouchableOpacity
+              style={[styles.memberChip, assignedTo === null && styles.memberChipActive]}
+              onPress={() => setAssignedTo(null)}
+            >
+              <Ionicons name="person-outline" size={14} color={assignedTo === null ? '#fff' : '#555'} />
+              <Text style={[styles.memberChipText, assignedTo === null && styles.memberChipTextActive]}>
+                Unassigned
+              </Text>
+            </TouchableOpacity>
+            {groupMembers.map(m => (
+              <TouchableOpacity
+                key={m.user_id}
+                style={[styles.memberChip, assignedTo === m.user_id && styles.memberChipActive]}
+                onPress={() => setAssignedTo(m.user_id)}
+              >
+                <Text style={[styles.memberChipText, assignedTo === m.user_id && styles.memberChipTextActive]}>
+                  {m.display_name || m.username}
+                  {m.user_id === user.id ? ' (you)' : ''}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
+
       <View style={styles.section}>
         <Text style={styles.label}>Checklist Items (Optional)</Text>
         {checklistItems.map((item, index) => (
@@ -469,6 +530,34 @@ const styles = StyleSheet.create({
   },
   typeSelector: {
     flexDirection: 'row',
+  },
+  memberList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  memberChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f5f5f5',
+  },
+  memberChipActive: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  memberChipText: {
+    fontSize: 14,
+    color: '#555',
+  },
+  memberChipTextActive: {
+    color: '#fff',
+    fontWeight: '600',
   },
   typeButton: {
     flex: 1,

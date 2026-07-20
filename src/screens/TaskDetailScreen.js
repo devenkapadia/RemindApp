@@ -167,6 +167,15 @@ export default function TaskDetailScreen({ route, navigation }) {
           <Ionicons name="flag-outline" size={18} color="#666" />
           <Text style={styles.infoText}>Status: {task.status}</Text>
         </View>
+
+        {task.assigned_to && (
+          <View style={styles.infoRow}>
+            <Ionicons name="person-outline" size={18} color="#666" />
+            <Text style={styles.infoText}>
+              Assigned to: {task.assigned_to_display_name || task.assigned_to_username || '—'}
+            </Text>
+          </View>
+        )}
       </View>
 
       {task.items && task.items.length > 0 && (

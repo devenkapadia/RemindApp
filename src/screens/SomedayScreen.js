@@ -11,14 +11,16 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getAllTasks, getChecklistItems, updateTask } from '../database/db';
+import { useAuth } from '../context/AuthContext';
 
 export default function SomedayScreen({ navigation }) {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadTasks = async () => {
     try {
-      const somedayTasks = await getAllTasks({ type: 'someday', status: 'pending' });
+      const somedayTasks = await getAllTasks({ type: 'someday', status: 'pending', user_id: user.id });
       
       // Load checklist items for each task
       const tasksWithItems = await Promise.all(

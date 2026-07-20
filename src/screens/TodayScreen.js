@@ -11,14 +11,16 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getTodayTasks, getChecklistItems, updateTask, updateChecklistItem } from '../database/db';
+import { useAuth } from '../context/AuthContext';
 
 export default function TodayScreen({ navigation }) {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState({ overdue: [], dueSoon: [], dueToday: [], recurring: [] });
   const [refreshing, setRefreshing] = useState(false);
 
   const loadTasks = async () => {
     try {
-      const todayData = await getTodayTasks();
+      const todayData = await getTodayTasks(user.id);
       const now = new Date();
       const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 

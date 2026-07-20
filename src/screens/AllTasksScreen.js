@@ -12,8 +12,10 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getAllTasks, getChecklistItems, updateTask } from '../database/db';
+import { useAuth } from '../context/AuthContext';
 
 export default function AllTasksScreen({ navigation }) {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,7 +25,7 @@ export default function AllTasksScreen({ navigation }) {
 
   const loadTasks = async () => {
     try {
-      const allTasks = await getAllTasks({ status: filterStatus });
+      const allTasks = await getAllTasks({ status: filterStatus, user_id: user.id });
       
       // Load checklist items for each task
       const tasksWithItems = await Promise.all(

@@ -6,6 +6,7 @@ import * as Notifications from 'expo-notifications';
 import { initDatabase } from './src/database/db';
 import AppNavigator from './src/navigation/AppNavigator';
 import { handleNotificationResponse } from './src/utils/notificationScheduler';
+import { AuthProvider } from './src/context/AuthContext';
 
 // Configure notification handler
 Notifications.setNotificationHandler({
@@ -66,12 +67,8 @@ export default function App() {
     });
 
     return () => {
-      if (notificationListener.current) {
-        Notifications.removeNotificationSubscription(notificationListener.current);
-      }
-      if (responseListener.current) {
-        Notifications.removeNotificationSubscription(responseListener.current);
-      }
+      notificationListener.current?.remove();
+      responseListener.current?.remove();
     };
   }, []);
 
@@ -93,10 +90,12 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <AppNavigator />
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <AppNavigator />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 
