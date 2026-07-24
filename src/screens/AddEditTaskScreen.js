@@ -130,6 +130,16 @@ export default function AddEditTaskScreen({ route, navigation }) {
       return;
     }
 
+    // Bug 1 fix: re-verify the user is still a member of the group before saving
+    if (routeGroupId && !isEditing) {
+      const { isUserInGroup } = require('../database/supabaseDb');
+      const stillMember = await isUserInGroup(routeGroupId, user.id);
+      if (!stillMember) {
+        Alert.alert('Not a member', 'You are no longer a member of this group and cannot add tasks to it.');
+        return;
+      }
+    }
+
     setSaving(true);
 
     try {

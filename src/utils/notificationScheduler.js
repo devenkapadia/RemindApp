@@ -333,13 +333,17 @@ export async function handleNotificationResponse(response) {
   const { taskId, checklistItemId } = notification.request.content.data;
 
   if (actionIdentifier === 'mark-done') {
-    // Mark task or checklist item as done
+    // Bug 3 fix: was requiring old db.js — now uses supabaseDb
+    const { updateChecklistItem, updateTask, getTask } = require('../database/supabaseDb');
+
+    // Check the task still exists and isn't already done/deleted
+    const task = await getTask(taskId);
+    if (!task || task.status !== 'pending') return;
+
     if (checklistItemId) {
-      const { updateChecklistItem } = require('../database/db');
       await updateChecklistItem(checklistItemId, { done: true });
       await cancelTaskNotifications(taskId, checklistItemId);
     } else {
-      const { updateTask } = require('../database/db');
       await updateTask(taskId, { status: 'done' });
       await cancelTaskNotifications(taskId);
     }

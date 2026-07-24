@@ -33,7 +33,13 @@ export default function GroupDetailScreen({ route, navigation }) {
         getAllTasks({ group_id: groupId })
       ]);
       setMembers(m);
-      setTasks(t);
+      // Bug 2 fix: only show tasks if user is still a member of the group
+      const stillMember = m.some(member => member.user_id === user.id);
+      setTasks(stillMember ? t : []);
+      if (!stillMember) {
+        Alert.alert('Removed', 'You are no longer a member of this group.');
+        navigation.goBack();
+      }
     } catch (e) {
       console.error(e);
     } finally {
