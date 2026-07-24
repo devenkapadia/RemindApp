@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createUser, getUserByUsername, updateUser } from '../database/db';
+import { createUser, getUserByUsername, updateUser } from '../database/supabaseDb';
 
 const AuthContext = createContext({});
 

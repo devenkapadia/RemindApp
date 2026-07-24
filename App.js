@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { initDatabase } from './src/database/db';
+import { initDatabase } from './src/database/supabaseDb';
 import AppNavigator from './src/navigation/AppNavigator';
 import { handleNotificationResponse } from './src/utils/notificationScheduler';
 import { AuthProvider } from './src/context/AuthContext';

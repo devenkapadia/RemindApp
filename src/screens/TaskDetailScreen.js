@@ -14,7 +14,7 @@ import {
   updateTask,
   updateChecklistItem,
   deleteTask,
-} from '../database/db';
+} from '../database/supabaseDb';
 import { cancelTaskNotifications } from '../utils/notificationScheduler';
 
 export default function TaskDetailScreen({ route, navigation }) {

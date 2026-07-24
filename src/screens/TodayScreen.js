@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { getTodayTasks, getChecklistItems, updateTask, updateChecklistItem } from '../database/db';
+import { getTodayTasks, getChecklistItems, updateTask, updateChecklistItem } from '../database/supabaseDb';
 import { useAuth } from '../context/AuthContext';
 
 export default function TodayScreen({ navigation }) {

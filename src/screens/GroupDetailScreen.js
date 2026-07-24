@@ -10,7 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   getGroupMembers, addGroupMember, removeGroupMember,
   getUserByUsername, getAllTasks
-} from '../database/db';
+} from '../database/supabaseDb';
 
 export default function GroupDetailScreen({ route, navigation }) {
   const { groupId, groupName } = route.params;
@@ -193,7 +193,7 @@ export default function GroupDetailScreen({ route, navigation }) {
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Invite by Username</Text>
             <TextInput
-              style={styles.phoneInput}
+              style={styles.usernameInput}
               placeholder="their username"
               autoCapitalize="none"
               autoCorrect={false}
@@ -300,6 +300,17 @@ const styles = StyleSheet.create({
     borderRightColor: '#d1d1d6',
   },
   phoneInput: { flex: 1, fontSize: 17, paddingVertical: 14, color: '#1c1c1e' },
+  usernameInput: {
+    borderWidth: 1.5,
+    borderColor: '#d1d1d6',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    fontSize: 16,
+    backgroundColor: '#f9f9fb',
+    color: '#1c1c1e',
+    marginBottom: 8,
+  },
   modalHint: { fontSize: 13, color: '#888', marginBottom: 20 },
   btn: { backgroundColor: '#007AFF', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginBottom: 10 },
   btnDisabled: { opacity: 0.4 },

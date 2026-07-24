@@ -4,7 +4,7 @@ import {
   createScheduledNotification,
   getScheduledNotifications,
   deleteScheduledNotifications,
-} from '../database/db';
+} from '../database/supabaseDb';
 
 // Escalation schedule based on PRD
 // >24h to deadline → 1x/day

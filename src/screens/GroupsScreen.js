@@ -6,7 +6,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
-import { getUserTaskGroups, deleteTaskGroup } from '../database/db';
+import { getUserTaskGroups, deleteTaskGroup } from '../database/supabaseDb';
 
 export default function GroupsScreen({ navigation }) {
   const { user } = useAuth();

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { getAllTasks, getChecklistItems, updateTask } from '../database/db';
+import { getAllTasks, getChecklistItems, updateTask } from '../database/supabaseDb';
 import { useAuth } from '../context/AuthContext';
 
 export default function AllTasksScreen({ navigation }) {

@@ -5,7 +5,7 @@ import {
   Platform, ScrollView, ActivityIndicator
 } from 'react-native';
 import { useAuth } from '../context/AuthContext';
-import { createTaskGroup } from '../database/db';
+import { createTaskGroup } from '../database/supabaseDb';
 
 export default function CreateGroupScreen({ navigation }) {
   const { user } = useAuth();

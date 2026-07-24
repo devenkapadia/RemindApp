@@ -19,7 +19,7 @@ import {
   updateChecklistItem,
   deleteChecklistItem,
   getGroupMembers,
-} from '../database/db';
+} from '../database/supabaseDb';
 import {
   scheduleTaskNotifications,
   cancelTaskNotifications,
